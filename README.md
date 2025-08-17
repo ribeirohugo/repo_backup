@@ -20,20 +20,10 @@ repobackup -f repos.txt
 
 ### 1.1. On Windows
 
-Example of compilation for Windows x64 b
+Example of running `repobackup` with file flag:
 
-`$env:GOOS = "windows"; $env:GOARCH = "amd64"; go build -o repobackup.exe cmd/main/repobackup.go`
-
-Example running 
-
-`.\repobackup.exe git@github.com:ribeirohugo/repo_backup.git`
-
-### 1.1. Compiling on Windows
+`.\repobackup -f repos.txt`
 
 Example of compilation for Windows x64:
 
 `$env:GOOS = "windows"; $env:GOARCH = "amd64"; go build -o repobackup.exe cmd/main/repobackup.go`
-
-Example of compilation for Windows x64 file loader:
-
-`$env:GOOS = "windows"; $env:GOARCH = "amd64"; go build -o repobackup.exe cmd/file/repobackup.go`
