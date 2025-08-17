@@ -26,7 +26,7 @@ func LoadFromFile(filePath string) ([]string, error) {
 	// Open the file
 	file, err := os.Open(filePath)
 	if err != nil {
-		return repos, fmt.Errorf("error opening file: %v\n", err)
+		return repos, fmt.Errorf("error opening file: %v", err)
 	}
 	defer file.Close()
 
