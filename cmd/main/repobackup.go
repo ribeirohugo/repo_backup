@@ -25,12 +25,14 @@ func main() {
 	}
 
 	var cloneDirs []string
+
 	for _, repoURL := range repos {
 		dir, err := backup.Clone(repoURL)
 		if err != nil {
 			fmt.Printf("Error cloning %s: %v\n", repoURL, err)
 			continue
 		}
+
 		cloneDirs = append(cloneDirs, dir)
 	}
 
@@ -39,11 +41,13 @@ func main() {
 		fmt.Printf("Error creating zip: %v\n", err)
 		return
 	}
+
 	fmt.Printf("Repositories zipped into %s\n", zipName)
 
 	if err := backup.Remove(cloneDirs); err != nil {
 		fmt.Printf("Error removing repos: %v\n", err)
 		return
 	}
+
 	fmt.Println("Cleanup complete.")
 }
