@@ -8,20 +8,23 @@ import (
 	"strings"
 )
 
-func LoadFromFile() ([]string, error) {
-	var repos []string
-
+func Load() ([]string, error) {
 	// Define flag
 	filePath := flag.String("f", "", "Path to file containing repository URLs (one per line)")
 	flag.Parse()
 
-	if *filePath == "" {
-		fmt.Println("Usage: go run main.go -f repos.txt")
-		os.Exit(1)
+	if *filePath != "" {
+		return LoadFromFile(*filePath)
 	}
 
+	return LoadFromArgs()
+}
+
+func LoadFromFile(filePath string) ([]string, error) {
+	var repos []string
+
 	// Open the file
-	file, err := os.Open(*filePath)
+	file, err := os.Open(filePath)
 	if err != nil {
 		return repos, fmt.Errorf("Error opening file: %v\n", err)
 	}
@@ -36,6 +39,18 @@ func LoadFromFile() ([]string, error) {
 		}
 
 		repos = append(repos, repo)
+	}
+
+	return repos, nil
+}
+
+func LoadFromArgs() ([]string, error) {
+	var repos []string
+
+	for _, repoURL := range os.Args[1:] {
+		if repoURL != "" {
+			repos = append(repos, repoURL)
+		}
 	}
 
 	return repos, nil
