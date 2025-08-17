@@ -11,13 +11,15 @@ import (
 	"time"
 )
 
+var ExecCommand = exec.Command // default to real exec.Command
+
 // Clone clones a git repository into the current directory
 func Clone(repoURL string) (string, error) {
 	parts := strings.Split(repoURL, "/")
 	name := strings.TrimSuffix(parts[len(parts)-1], ".git")
 
 	fmt.Printf("Cloning %s...\n", repoURL)
-	cmd := exec.Command("git", "clone", repoURL)
+	cmd := ExecCommand("git", "clone", repoURL)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
