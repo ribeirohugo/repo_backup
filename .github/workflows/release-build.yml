@@ -31,7 +31,7 @@ jobs:
         run: |
           mkdir -p ./publish
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
-            go build -o ./publish/repobackup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }} ./cmd/repobackup/main.go
+            go build -o ./publish/repobackup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }} ./cmd/main/repobackup.go
 
       - name: Upload Assets
         uses: actions/upload-release-asset@v1
