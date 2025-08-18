@@ -9,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      id-token: write
     strategy:
       matrix:
         goos: [windows, darwin, linux]
@@ -32,14 +33,24 @@ jobs:
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
             go build -o ./publish/repobackup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }} ./cmd/repobackup/main.go
 
-      - name: Upload binaries to Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: ./publish/*
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
-          generate_release_notes: true
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.release.outputs.upload_url }}
+          asset_path: ./publish/*
+          asset_name: repobackup-${{ matrix.goos }}-${{ matrix.goarch }}
+          asset_content_type: application/zip
+
+#      - name: Upload binaries to Release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          files: ./publish/*
+#          tag_name: ${{ github.ref_name }}
+#          name: Release ${{ github.ref_name }}
+#          draft: false
+#          prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc') }}
+#          generate_release_notes: true
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.TOKEN }}
