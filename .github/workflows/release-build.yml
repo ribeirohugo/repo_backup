@@ -33,21 +33,12 @@ jobs:
           GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} \
             go build -o ./publish/repobackup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }} ./cmd/repobackup/main.go
 
-#      - name: Upload Release Assets
-#        uses: actions/upload-release-asset@v1
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN }}
-#        with:
-#          upload_url: ${{ steps.release.outputs.upload_url }}
-#          asset_path: ./publish/*
-#          asset_name: repobackup-${{ matrix.goos }}-${{ matrix.goarch }}
-#          asset_content_type: application/zip
-
       - name: Upload Binaries
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # or secrets.TOKEN
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           upload_url: ${{ github.event.release.upload_url }}  # From release event
           asset_path: ./publish/*
           asset_name: "repobackup-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.goos == 'windows' && '.exe' || '' }}"
+          asset_content_type: application/zip
