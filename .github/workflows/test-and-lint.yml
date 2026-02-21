@@ -31,8 +31,8 @@ jobs:
       - name: Clean
         run: go clean -modcache -v
 
-  unit-test:
-    name: Run unit tests
+  build:
+    name: Build
     runs-on: ubuntu-latest
 
     steps:
@@ -46,6 +46,22 @@ jobs:
 
       - name: Build
         run: go build ./...
+
+      - name: Clean
+        run: go clean -modcache -v
+
+  unit-test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.26"
 
       - name: Test
         run: go test ./...
